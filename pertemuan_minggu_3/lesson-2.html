@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberCore: Quantum Incremental Game</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-base: #060913;
+            --bg-surface: rgba(14, 21, 37, 0.75);
+            --bg-card: rgba(22, 33, 58, 0.65);
+            --bg-card-hover: rgba(30, 46, 80, 0.85);
+            --primary: #00f2fe;
+            --primary-glow: rgba(0, 242, 254, 0.45);
+            --secondary: #9d4edd;
+            --secondary-glow: rgba(157, 78, 221, 0.4);
+            --accent: #ff007f;
+            --accent-glow: rgba(255, 0, 127, 0.4);
+            --success: #00f59b;
+            --warning: #ffb703;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glass: rgba(255, 255, 255, 0.08);
+            --border-active: rgba(0, 242, 254, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Canvas Latar Belakang Partikel */
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Grid Background Pattern */
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 242, 254, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Kontainer Utama Game */
+        .app-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 16px 24px;
+        }
+
+        /* Header Navbar */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px;
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 16px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 38px;
+            height: 38px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--primary-glow);
+        }
+
+        .brand-logo svg {
+            width: 22px;
+            height: 22px;
+            fill: #060913;
+        }
+
+        .brand-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, #fff, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .brand-badge {
+            font-size: 0.65rem;
+            background: rgba(0, 242, 254, 0.15);
+            color: var(--primary);
+            border: 1px solid var(--border-active);
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            color: var(--text-main);
+            padding: 8px 12px;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .icon-btn:hover {
+            background: rgba(0, 242, 254, 0.15);
+            border-color: var(--border-active);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .save-indicator {
+            font-size: 0.75rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .save-indicator .dot {
+            width: 7px;
+            height: 7px;
+            background-color: var(--success);
+            border-radius: 50%;
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        /* Layout Grid Game */
+        .game-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.3fr;
+            gap: 24px;
+            flex: 1;
+        }
+
+        @media (max-width: 992px) {
+            .game-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Panel Kiri: Core Reactor & Clicker */
+        .core-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Ambient Glow di dalam Panel */
+        .core-panel::before {
+            content: '';
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 320px;
+            height: 320px;
+            background: radial-gradient(circle, var(--primary-glow) 0%, rgba(157, 78, 221, 0.15) 50%, transparent 70%);
+            filter: blur(50px);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .stats-header {
+            text-align: center;
+            z-index: 2;
+            width: 100%;
+        }
+
+        .energy-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .energy-value-container {
+            display: flex;
+            align-items: baseline;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .energy-counter {
+            font-family: 'Orbitron', monospace;
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #ffffff 30%, var(--primary) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 25px var(--primary-glow);
+            line-height: 1.1;
+        }
+
+        .energy-unit {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .rate-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-top: 10px;
+            font-size: 0.95rem;
+        }
+
+        .rate-badge {
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.25);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: var(--primary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .click-power-badge {
+            background: rgba(157, 78, 221, 0.1);
+            border: 1px solid rgba(157, 78, 221, 0.25);
+            padding: 6px 14px;
+            border-radius: 20px;
+            color: var(--secondary);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Area Interaksi Core Klik */
+        .core-click-zone {
+            position: relative;
+            z-index: 2;
+            width: 280px;
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+            cursor: pointer;
+        }
+
+        /* Lingkaran Berputar (Rings) */
+        .ring {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .ring-outer {
+            width: 270px;
+            height: 270px;
+            border: 2px dashed rgba(0, 242, 254, 0.35);
+            animation: spinCW 24s linear infinite;
+        }
+
+        .ring-middle {
+            width: 220px;
+            height: 220px;
+            border: 2px solid rgba(157, 78, 221, 0.45);
+            border-top-color: transparent;
+            border-bottom-color: transparent;
+            animation: spinCCW 14s linear infinite;
+        }
+
+        .ring-inner {
+            width: 170px;
+            height: 170px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left-color: var(--primary);
+            border-right-color: var(--accent);
+            animation: spinCW 8s linear infinite;
+        }
+
+        /* Inti Reaktor (Core Crystal/Orb) */
+        .reactor-orb {
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 35% 35%, #ffffff 0%, var(--primary) 40%, #0d47a1 80%, #060913 100%);
+            box-shadow: 
+                0 0 30px var(--primary),
+                0 0 70px var(--primary-glow),
+                inset 0 0 20px rgba(255, 255, 255, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 3;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: pulseOrb 3.5s ease-in-out infinite;
+        }
+
+        .reactor-orb svg {
+            width: 55px;
+            height: 55px;
+            fill: #ffffff;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.8));
+        }
+
+        .core-click-zone:active .reactor-orb {
+            transform: scale(0.92);
+        }
+
+        .core-click-zone:hover .ring-outer {
+            border-color: var(--primary);
+            filter: drop-shadow(0 0 10px var(--primary-glow));
+        }
+
+        /* Floating Click Numbers (+1, +10) */
+        .floating-text {
+            position: absolute;
+            font-family: 'Orbitron', monospace;
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #ffffff;
+            text-shadow: 0 0 8px var(--primary), 0 0 15px var(--primary-glow);
+            pointer-events: none;
+            z-index: 10;
+            animation: floatUp 0.85s ease-out forwards;
+        }
+
+        /* Mini Stats Bar di Bawah Panel Kiri */
+        .core-footer-stats {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            z-index: 2;
+        }
+
+        .mini-stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-glass);
+            padding: 10px 14px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .mini-stat-label {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .mini-stat-val {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        /* Panel Kanan: Tabs & Toko (Generators, Upgrades, Achievements) */
+        .control-panel {
+            background: var(--bg-surface);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Navigasi Tab */
+        .tabs-header {
+            display: flex;
+            background: rgba(10, 15, 26, 0.75);
+            border-bottom: 1px solid var(--border-glass);
+            padding: 6px;
+            gap: 6px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px 14px;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-badge {
+            background: rgba(0, 242, 254, 0.2);
+            color: var(--primary);
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 700;
+        }
+
+        /* Sub-bar untuk Generator (Multiplier: 1x, 10x, 100x) */
+        .shop-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            background: rgba(0, 0, 0, 0.15);
+            border-bottom: 1px solid var(--border-glass);
+        }
+
+        .toolbar-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .buy-multiplier {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-glass);
+            border-radius: 8px;
+            padding: 3px;
+            gap: 2px;
+        }
+
+        .mult-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mult-btn.active {
+            background: var(--primary);
+            color: #060913;
+        }
+
+        /* Konten Tab Area (Scrollable) */
+        .tab-content {
+            flex: 1;
+            padding: 16px 20px;
+            overflow-y: auto;
+            max-height: 580px;
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Custom Scrollbar */
+        .tab-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tab-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .tab-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+
+        .tab-content::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-glow);
+        }
+
+        /* Item Generator / Bangunan */
+        .generator-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            transition: all 0.25s ease;
+        }
+
+        .generator-item:hover {
+            background: var(--bg-card-hover);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateX(3px);
+        }
+
+        .gen-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex: 1;
+        }
+
+        .gen-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(0, 242, 254, 0.1);
+            border: 1px solid rgba(0, 242, 254, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .gen-icon svg {
+            width: 26px;
+            height: 26px;
+            fill: var(--primary);
+        }
+
+        .gen-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .gen-name-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .gen-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .gen-count {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1px 7px;
+            border-radius: 12px;
+            color: var(--primary);
+        }
+
+        .gen-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .gen-rate {
+            font-size: 0.78rem;
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .buy-btn {
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid var(--border-active);
+            color: #ffffff;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            min-width: 110px;
+        }
+
+        .buy-btn:hover:not(:disabled) {
+            background: var(--primary);
+            color: #060913;
+            box-shadow: 0 0 18px var(--primary-glow);
+            transform: translateY(-2px);
+        }
+
+        .buy-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+            color: var(--text-muted);
+        }
+
+        .buy-cost-text {
+            font-size: 0.9rem;
+        }
+
+        .buy-label-text {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            opacity: 0.75;
+        }
+
+        /* Item Riset / Upgrades */
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 14px;
+        }
+
+        .upgrade-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 14px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            transition: all 0.25s ease;
+        }
+
+        .upgrade-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(157, 78, 221, 0.2);
+        }
+
+        .upgrade-top {
+            display: flex;
+            gap: 12px;
+        }
+
+        .upgrade-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(157, 78, 221, 0.15);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .upgrade-icon svg {
+            width: 22px;
+            height: 22px;
+            fill: var(--secondary);
+        }
+
+        .upgrade-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 3px;
+        }
+
+        .upgrade-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            line-height: 1.3;
+        }
+
+        .upgrade-btn {
+            width: 100%;
+            background: rgba(157, 78, 221, 0.15);
+            border: 1px solid var(--secondary);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .upgrade-btn:hover:not(:disabled) {
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary-glow);
+        }
+
+        .upgrade-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: var(--border-glass);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* Achievements / Prestasi */
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 12px;
+        }
+
+        .achievement-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-glass);
+            border-radius: 12px;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            opacity: 0.45;
+            filter: grayscale(80%);
+            transition: all 0.3s ease;
+        }
+
+        .achievement-card.unlocked {
+            opacity: 1;
+            filter: grayscale(0%);
+            border-color: rgba(255, 183, 3, 0.4);
+            background: rgba(30, 40, 65, 0.8);
+            box-shadow: 0 0 15px rgba(255, 183, 3, 0.12);
+        }
+
+        .ach-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 183, 3, 0.15);
+            border: 1px solid rgba(255, 183, 3, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .ach-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--warning);
+        }
+
+        .ach-info h4 {
+            font-size: 0.85rem;
+            color: #ffffff;
+            margin-bottom: 2px;
+        }
+
+        .ach-info p {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+
+        /* Prestige / Quantum Reset Card */
+        .prestige-box {
+            background: linear-gradient(135deg, rgba(22, 33, 58, 0.8) 0%, rgba(58, 12, 60, 0.4) 100%);
+            border: 1px solid var(--accent);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .prestige-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 8px;
+            text-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .prestige-desc {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            max-width: 500px;
+            margin: 0 auto 18px;
+            line-height: 1.5;
+        }
+
+        .shard-display {
+            font-family: 'Orbitron', monospace;
+            font-size: 1.8rem;
+            color: #ffffff;
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .prestige-btn {
+            background: var(--accent);
+            border: none;
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 10px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+
+        .prestige-btn:hover:not(:disabled) {
+            transform: scale(1.04);
+            box-shadow: 0 6px 25px var(--accent-glow);
+        }
+
+        .prestige-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            filter: grayscale(1);
+        }
+
+        /* Toast Notifikasi Achievement / Info */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .toast {
+            background: var(--bg-surface);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--warning);
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.35s ease-out;
+            pointer-events: auto;
+        }
+
+        .toast-icon {
+            font-size: 1.3rem;
+        }
+
+        .toast-title {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--warning);
+        }
+
+        .toast-sub {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Animations */
+        @keyframes spinCW {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes spinCCW {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(-360deg); }
+        }
+
+        @keyframes pulseOrb {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 30px var(--primary), 0 0 70px var(--primary-glow);
+            }
+            50% {
+                transform: scale(1.05);
+                box-shadow: 0 0 45px var(--primary), 0 0 95px var(--primary-glow);
+            }
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-80px) scale(1.3);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Canvas Partikel Latar Belakang -->
+    <canvas id="bgCanvas"></canvas>
+    <div class="grid-overlay"></div>
+
+    <div class="app-container">
+        <!-- Header -->
+        <header>
+            <div class="brand">
+                <div class="brand-logo">
+                    <svg viewBox="0 0 24 24">
+                        <polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/>
+                    </svg>
+                </div>
+                <div>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span class="brand-title">CYBERCORE</span>
+                        <span class="brand-badge">v1.2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="save-indicator">
+                    <span class="dot"></span>
+                    <span id="saveStatusText">Tersimpan</span>
+                </div>
+                <button class="icon-btn" id="audioToggleBtn" title="Aktifkan / Bisukan Suara">
+                    <span id="audioIcon">🔊</span>
+                    <span id="audioText">Suara</span>
+                </button>
+                <button class="icon-btn" id="resetGameBtn" title="Reset Ulang Game">
+                    <span>↺</span>
+                    <span>Reset</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Game Layout -->
+        <div class="game-grid">
+            <!-- PANEL KIRI: Inti Reaktor & Klik Manual -->
+            <section class="core-panel">
+                <div class="stats-header">
+                    <p class="energy-label">Total Cadangan Energi</p>
+                    <div class="energy-value-container">
+                        <span class="energy-counter" id="energyDisplay">0</span>
+                        <span class="energy-unit">JOULES</span>
+                    </div>
+                    
+                    <div class="rate-container">
+                        <div class="rate-badge">
+                            <span>⚡ +<span id="epsDisplay">0</span> /detik</span>
+                        </div>
+                        <div class="click-power-badge">
+                            <span>👆 +<span id="clickPowerDisplay">1</span> /klik</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interaktif Reactor Core Click Area -->
+                <div class="core-click-zone" id="coreClickZone">
+                    <div class="ring ring-outer"></div>
+                    <div class="ring ring-middle"></div>
+                    <div class="ring ring-inner"></div>
+                    
+                    <div class="reactor-orb" id="reactorOrb">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Footer Stats Ringkas -->
+                <div class="core-footer-stats">
+                    <div class="mini-stat-card">
+                        <span class="mini-stat-label">Total Klik</span>
+                        <span class="mini-stat-val" id="totalClicksDisplay">0</span>
+                    </div>
+                    <div class="mini-stat-card">
+                        <span class="mini-stat-label">Quantum Shards</span>
+                        <span class="mini-stat-val" id="shardsStatDisplay">0 (+0%)</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PANEL KANAN: Toko Generator, Riset, Prestasi & Prestise -->
+            <section class="control-panel">
+                <!-- Navigasi Tab -->
+                <nav class="tabs-header">
+                    <button class="tab-btn active" data-tab="generators">
+                        <span>⚡ Generator</span>
+                        <span class="tab-badge" id="genBadge">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="upgrades">
+                        <span>🔬 Riset & Mod</span>
+                        <span class="tab-badge" id="upgBadge">0</span>
+                    </button>
+                    <button class="tab-btn" data-tab="achievements">
+                        <span>🏆 Prestasi</span>
+                        <span class="tab-badge" id="achBadge">0/8</span>
+                    </button>
+                    <button class="tab-btn" data-tab="prestige">
+                        <span>🌀 Prestise</span>
+                    </button>
+                </nav>
+
+                <!-- TAB 1: GENERATORS -->
+                <div class="tab-content active" id="tab-generators">
+                    <div class="shop-toolbar">
+                        <span class="toolbar-title">Infrastruktur Energi Otomatis</span>
+                        <div class="buy-multiplier">
+                            <button class="mult-btn active" data-mult="1">1x</button>
+                            <button class="mult-btn" data-mult="10">10x</button>
+                            <button class="mult-btn" data-mult="100">100x</button>
+                        </div>
+                    </div>
+                    <div id="generatorsList" style="margin-top: 14px;">
+                        <!-- List Generator di-render secara dinamis lewat JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 2: RESEARCH & UPGRADES -->
+                <div class="tab-content" id="tab-upgrades">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+                        Beli modul riset sekali bayar untuk meningkatkan efisiensi klik dan produksi generator.
+                    </p>
+                    <div class="upgrade-grid" id="upgradesList">
+                        <!-- List Riset di-render secara dinamis lewat JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 3: ACHIEVEMENTS -->
+                <div class="tab-content" id="tab-achievements">
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 14px;">
+                        Koleksi pencapaian untuk membuktikan dominasi teknologi CyberCore Anda.
+                    </p>
+                    <div class="achievement-grid" id="achievementsList">
+                        <!-- List Prestasi di-render secara dinamis lewat JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 4: PRESTIGE (ASCENSION) -->
+                <div class="tab-content" id="tab-prestige">
+                    <div class="prestige-box">
+                        <h3 class="prestige-title">KOLAPS KUANTUM (ASCENSION)</h3>
+                        <p class="prestige-desc">
+                            Reset seluruh energi dan generator saat ini untuk memanen <strong>Quantum Shards</strong>. 
+                            Setiap Shard memberikan bonus permanen <strong>+10% produksi energi global</strong>!
+                        </p>
+                        <div class="shard-display">
+                            <span>💎</span>
+                            <span id="pendingShardsDisplay">0</span>
+                            <span style="font-size: 1rem; color: var(--text-muted);">Shards Tersedia</span>
+                        </div>
+                        <button class="prestige-btn" id="ascendBtn" disabled>
+                            Lakukan Kolaps Kuantum
+                        </button>
+                    </div>
+
+                    <div style="background: var(--bg-card); border: 1px solid var(--border-glass); border-radius: 12px; padding: 16px;">
+                        <h4 style="font-size: 0.95rem; margin-bottom: 10px; color: #fff;">Statistik Komprehensif</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 0.82rem;">
+                            <div>Total Energi Sepanjang Masa: <strong id="statTotalAllTime">0</strong></div>
+                            <div>Total Klik Manual: <strong id="statTotalClicks">0</strong></div>
+                            <div>Total Kali Prestise: <strong id="statPrestigeCount">0</strong></div>
+                            <div>Bonus Global Sekarang: <strong id="statGlobalBonus">+0%</strong></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Wadah Toast Notifikasi -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        /* ==========================================================================
+           AUDIO SYNTHESIZER (NATIVE WEB AUDIO API - TANPA FILE LUAR)
+           ========================================================================== */
+        let audioCtx = null;
+        let isAudioMuted = false;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) audioCtx = new AudioContextClass();
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playSound(type) {
+            if (isAudioMuted) return;
+            try {
+                initAudio();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                const now = audioCtx.currentTime;
+
+                if (type === 'click') {
+                    // Synth Blip Cepat untuk Klik
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(400 + Math.random() * 200, now);
+                    osc.frequency.exponentialRampToValueAtTime(150, now + 0.08);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else if (type === 'buy') {
+                    // Chime Tingkat Menengah saat Pembelian
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.06); // E5
+                    gain.gain.setValueAtTime(0.15, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'achievement') {
+                    // Fanfare Singkat saat Unlock Prestasi
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(440, now);
+                    osc.frequency.setValueAtTime(554.37, now + 0.08);
+                    osc.frequency.setValueAtTime(659.25, now + 0.16);
+                    osc.frequency.setValueAtTime(880, now + 0.24);
+                    gain.gain.setValueAtTime(0.18, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+                    osc.start(now);
+                    osc.stop(now + 0.4);
+                }
+            } catch (err) {
+                // Ignore audio restriction errors
+            }
+        }
+
+        /* ==========================================================================
+           GAME STATE & DATA MODELS
+           ========================================================================== */
+        const gameState = {
+            energy: 0,
+            totalEnergyAllTime: 0,
+            totalClicks: 0,
+            clickPower: 1,
+            prestigeShards: 0,
+            prestigeCount: 0,
+            lastSaveTime: Date.now(),
+            buyMultiplier: 1,
+
+            // Daftar Generator / Bangunan
+            generators: [
+                {
+                    id: 'nanobot',
+                    name: 'Nanobot Miner',
+                    desc: 'Unit mikro perakit yang memanen elektron lepas.',
+                    baseCost: 15,
+                    baseRate: 0.8,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<polygon points="12,2 2,7 12,12 22,7"/>'
+                },
+                {
+                    id: 'solar',
+                    name: 'Solar Photon Collector',
+                    desc: 'Panel surya fotonik pemusat spektrum cahaya laser.',
+                    baseCost: 100,
+                    baseRate: 5,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>'
+                },
+                {
+                    id: 'plasma',
+                    name: 'Plasma Turbine',
+                    desc: 'Pemutar magnetik plasma ion berkecepatan supersonik.',
+                    baseCost: 1100,
+                    baseRate: 42,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>'
+                },
+                {
+                    id: 'fusion',
+                    name: 'Sub-Atomic Fusion Core',
+                    desc: 'Reaktor fusi mikro hidrogen yang membangkitkan plasma murni.',
+                    baseCost: 12000,
+                    baseRate: 260,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3"/>'
+                },
+                {
+                    id: 'dyson',
+                    name: 'Dyson Swarm Matrix',
+                    desc: 'Satelit orbit luas yang menampung radiasi bintang penuh.',
+                    baseCost: 130000,
+                    baseRate: 1500,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<circle cx="12" cy="12" r="4"/><path d="M4.93 4.93l4.24 4.24M14.83 14.83l4.24 4.24M14.83 9.17l4.24-4.24M4.93 19.07l4.24-4.24"/>'
+                },
+                {
+                    id: 'singularity',
+                    name: 'Quantum Singularity Engine',
+                    desc: 'Menciptakan lubang hitam mini buatan untuk energi tanpa batas.',
+                    baseCost: 1400000,
+                    baseRate: 9800,
+                    costMult: 1.15,
+                    count: 0,
+                    icon: '<circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 1 10 10M12 12a5 5 0 0 1 5 5"/>'
+                }
+            ],
+
+            // Modul Riset (Permanent Multipliers)
+            upgrades: [
+                {
+                    id: 'click_1',
+                    name: 'Overclocked Transistor',
+                    desc: 'Menggandakan kekuatan klik manual (+100%).',
+                    cost: 100,
+                    bought: false,
+                    type: 'click',
+                    mult: 2
+                },
+                {
+                    id: 'click_2',
+                    name: 'Cybernetic Haptic Glove',
+                    desc: 'Menggandakan kekuatan klik manual (+100%).',
+                    cost: 1500,
+                    bought: false,
+                    type: 'click',
+                    mult: 2
+                },
+                {
+                    id: 'synergy_1',
+                    name: 'Quantum Feedback Loop',
+                    desc: 'Setiap klik menambahkan 2% dari total EPS Anda saat ini.',
+                    cost: 8000,
+                    bought: false,
+                    type: 'synergy',
+                    mult: 0.02
+                },
+                {
+                    id: 'nano_boost',
+                    name: 'Neural Network Swarm',
+                    desc: 'Produksi Nanobot Miner meningkat 2x lipat.',
+                    cost: 500,
+                    bought: false,
+                    type: 'generator',
+                    genId: 'nanobot',
+                    mult: 2
+                },
+                {
+                    id: 'solar_boost',
+                    name: 'Hyper-Reflective Mirror',
+                    desc: 'Produksi Solar Photon Collector meningkat 2x lipat.',
+                    cost: 4500,
+                    bought: false,
+                    type: 'generator',
+                    genId: 'solar',
+                    mult: 2
+                },
+                {
+                    id: 'global_boost',
+                    name: 'Superconductor Cables',
+                    desc: 'Efisiensi seluruh generator energi meningkat 25%.',
+                    cost: 50000,
+                    bought: false,
+                    type: 'global',
+                    mult: 1.25
+                }
+            ],
+
+            // Prestasi (Achievements)
+            achievements: [
+                { id: 'first_click', name: 'Percikan Pertama', desc: 'Lakukan klik manual pertama kali pada Core.', unlocked: false },
+                { id: 'clicks_100', name: 'Kecepatan Kinetik', desc: 'Capai 100 klik manual pada Core.', unlocked: false },
+                { id: 'energy_1k', name: 'Penyimpan Daya', desc: 'Kumpulkan 1,000 Joules energi.', unlocked: false },
+                { id: 'energy_1m', name: 'Mega Kapasitor', desc: 'Kumpulkan 1,000,000 Joules energi.', unlocked: false },
+                { id: 'first_gen', name: 'Era Otomasi', desc: 'Beli generator pertama Anda.', unlocked: false },
+                { id: 'gen_50', name: 'Konglomerat Pabrik', desc: 'Miliki 50 total generator dari tipe apapun.', unlocked: false },
+                { id: 'eps_100', name: 'Arus Super', desc: 'Hasilkan lebih dari 100 Joules/detik.', unlocked: false },
+                { id: 'first_prestige', name: 'Transendensi Realitas', desc: 'Lakukan Kolaps Kuantum (Prestise) pertama kali.', unlocked: false }
+            ]
+        };
+
+        /* ==========================================================================
+           HELPER FORMATTING ANGKA
+           ========================================================================== */
+        const SUFFIXES = ['', 'K', 'M', 'B', 'T', 'Qa', 'Qi', 'Sx', 'Sp', 'Oc', 'No', 'Dc'];
+
+        function formatNumber(num) {
+            if (num === null || num === undefined || isNaN(num)) return '0';
+            if (num < 1000) {
+                return num % 1 === 0 ? num.toString() : num.toFixed(1);
+            }
+            const i = Math.floor(Math.log10(num) / 3);
+            if (i >= SUFFIXES.length) return num.toExponential(2);
+            const scaled = num / Math.pow(10, i * 3);
+            return scaled.toFixed(2) + ' ' + SUFFIXES[i];
+        }
+
+        /* ==========================================================================
+           LOGIKA PERHITUNGAN GAME
+           ========================================================================== */
+        // Menghitung Biaya Pembelian Generator (termasuk kelipatan 1x, 10x, 100x)
+        function getGeneratorCost(gen, amount = 1) {
+            let total = 0;
+            for (let i = 0; i < amount; i++) {
+                total += gen.baseCost * Math.pow(gen.costMult, gen.count + i);
+            }
+            return Math.floor(total);
+        }
+
+        // Menghitung Bonus Global dari Shards
+        function getPrestigeMultiplier() {
+            return 1 + (gameState.prestigeShards * 0.10); // +10% per shard
+        }
+
+        // Menghitung EPS (Energy Per Second)
+        function calculateEPS() {
+            let total = 0;
+            const prestigeMult = getPrestigeMultiplier();
+
+            // Hitung multiplier global dari upgrade
+            let globalUpgradeMult = 1;
+            gameState.upgrades.forEach(u => {
+                if (u.bought && u.type === 'global') globalUpgradeMult *= u.mult;
+            });
+
+            gameState.generators.forEach(gen => {
+                let genMult = 1;
+                // Cek jika ada upgrade khusus generator ini
+                gameState.upgrades.forEach(u => {
+                    if (u.bought && u.type === 'generator' && u.genId === gen.id) {
+                        genMult *= u.mult;
+                    }
+                });
+
+                total += (gen.count * gen.baseRate * genMult);
+            });
+
+            return total * globalUpgradeMult * prestigeMult;
+        }
+
+        // Menghitung Nilai Tiap Klik Manual
+        function calculateClickPower() {
+            let power = 1;
+            gameState.upgrades.forEach(u => {
+                if (u.bought && u.type === 'click') power *= u.mult;
+            });
+
+            // Synergy Upgrade: Menambahkan persen EPS ke klik
+            gameState.upgrades.forEach(u => {
+                if (u.bought && u.type === 'synergy') {
+                    power += calculateEPS() * u.mult;
+                }
+            });
+
+            return Math.max(1, power * getPrestigeMultiplier());
+        }
+
+        // Menghitung Quantum Shards yang akan didapat jika Prestise sekarang
+        function calculatePendingShards() {
+            if (gameState.totalEnergyAllTime < 100000) return 0;
+            return Math.floor(Math.cbrt(gameState.totalEnergyAllTime / 100000));
+        }
+
+        /* ==========================================================================
+           SISTEM PRESTASI & TOAST NOTIFIKASI
+           ========================================================================== */
+        function checkAchievements() {
+            const eps = calculateEPS();
+            const totalGens = gameState.generators.reduce((acc, g) => acc + g.count, 0);
+
+            const rules = {
+                first_click: gameState.totalClicks >= 1,
+                clicks_100: gameState.totalClicks >= 100,
+                energy_1k: gameState.energy >= 1000,
+                energy_1m: gameState.energy >= 1000000,
+                first_gen: totalGens >= 1,
+                gen_50: totalGens >= 50,
+                eps_100: eps >= 100,
+                first_prestige: gameState.prestigeCount >= 1
+            };
+
+            gameState.achievements.forEach(ach => {
+                if (!ach.unlocked && rules[ach.id]) {
+                    ach.unlocked = true;
+                    showAchievementToast(ach.name, ach.desc);
+                    playSound('achievement');
+                    renderAchievementsTab();
+                }
+            });
+        }
+
+        function showAchievementToast(title, desc) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <div class="toast-icon">🏆</div>
+                <div>
+                    <div class="toast-title">Prestasi Terbuka: ${title}</div>
+                    <div class="toast-sub">${desc}</div>
+                </div>
+            `;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.4s ease';
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        /* ==========================================================================
+           RENDER DOM ELEMEN
+           ========================================================================== */
+        function renderGeneratorsTab() {
+            const container = document.getElementById('generatorsList');
+            container.innerHTML = '';
+            const mult = gameState.buyMultiplier;
+
+            gameState.generators.forEach(gen => {
+                const cost = getGeneratorCost(gen, mult);
+                const canAfford = gameState.energy >= cost;
+
+                const item = document.createElement('div');
+                item.className = 'generator-item';
+                item.innerHTML = `
+                    <div class="gen-left">
+                        <div class="gen-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                ${gen.icon}
+                            </svg>
+                        </div>
+                        <div class="gen-info">
+                            <div class="gen-name-row">
+                                <span class="gen-name">${gen.name}</span>
+                                <span class="gen-count">Lvl ${gen.count}</span>
+                            </div>
+                            <span class="gen-desc">${gen.desc}</span>
+                            <span class="gen-rate">+${formatNumber(gen.baseRate * gen.count * getPrestigeMultiplier())} J/dtk</span>
+                        </div>
+                    </div>
+                    <button class="buy-btn" id="buy-gen-${gen.id}" ${canAfford ? '' : 'disabled'}>
+                        <span class="buy-cost-text">⚡ ${formatNumber(cost)}</span>
+                        <span class="buy-label-text">Beli (${mult}x)</span>
+                    </button>
+                `;
+
+                item.querySelector(`#buy-gen-${gen.id}`).addEventListener('click', () => {
+                    buyGenerator(gen.id);
+                });
+
+                container.appendChild(item);
+            });
+        }
+
+        function renderUpgradesTab() {
+            const container = document.getElementById('upgradesList');
+            container.innerHTML = '';
+
+            const availableUpgrades = gameState.upgrades.filter(u => !u.bought);
+
+            if (availableUpgrades.length === 0) {
+                container.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 30px;">Semua riset teknologi telah selesai diteliti!</p>`;
+                return;
+            }
+
+            availableUpgrades.forEach(upg => {
+                const canAfford = gameState.energy >= upg.cost;
+                const card = document.createElement('div');
+                card.className = 'upgrade-card';
+                card.innerHTML = `
+                    <div class="upgrade-top">
+                        <div class="upgrade-icon">
+                            <svg viewBox="0 0 24 24">
+                                <polygon points="12,2 19,21 12,17 5,21"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="upgrade-title">${upg.name}</div>
+                            <div class="upgrade-desc">${upg.desc}</div>
+                        </div>
+                    </div>
+                    <button class="upgrade-btn" id="buy-upg-${upg.id}" ${canAfford ? '' : 'disabled'}>
+                        <span>Riset</span>
+                        <span>⚡ ${formatNumber(upg.cost)}</span>
+                    </button>
+                `;
+
+                card.querySelector(`#buy-upg-${upg.id}`).addEventListener('click', () => {
+                    buyUpgrade(upg.id);
+                });
+
+                container.appendChild(card);
+            });
+        }
+
+        function renderAchievementsTab() {
+            const container = document.getElementById('achievementsList');
+            container.innerHTML = '';
+
+            let unlockedCount = 0;
+            gameState.achievements.forEach(ach => {
+                if (ach.unlocked) unlockedCount++;
+                const card = document.createElement('div');
+                card.className = `achievement-card ${ach.unlocked ? 'unlocked' : ''}`;
+                card.innerHTML = `
+                    <div class="ach-icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="8" r="7"/>
+                            <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                        </svg>
+                    </div>
+                    <div class="ach-info">
+                        <h4>${ach.name}</h4>
+                        <p>${ach.desc}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+
+            document.getElementById('achBadge').textContent = `${unlockedCount}/${gameState.achievements.length}`;
+        }
+
+        function updateUI() {
+            // Update Tampilan Nilai Utama
+            document.getElementById('energyDisplay').textContent = formatNumber(gameState.energy);
+            document.getElementById('epsDisplay').textContent = formatNumber(calculateEPS());
+            document.getElementById('clickPowerDisplay').textContent = formatNumber(calculateClickPower());
+            document.getElementById('totalClicksDisplay').textContent = formatNumber(gameState.totalClicks);
+            
+            const bonusPercent = ((getPrestigeMultiplier() - 1) * 100).toFixed(0);
+            document.getElementById('shardsStatDisplay').textContent = `${gameState.prestigeShards} (+${bonusPercent}%)`;
+
+            // Update Badge Jumlah Generator & Upgrade
+            const totalGens = gameState.generators.reduce((acc, g) => acc + g.count, 0);
+            document.getElementById('genBadge').textContent = totalGens;
+            
+            const remainingUpgrades = gameState.upgrades.filter(u => !u.bought).length;
+            document.getElementById('upgBadge').textContent = remainingUpgrades;
+
+            // Update Status Tombol Beli Generator
+            const mult = gameState.buyMultiplier;
+            gameState.generators.forEach(gen => {
+                const btn = document.getElementById(`buy-gen-${gen.id}`);
+                if (btn) {
+                    const cost = getGeneratorCost(gen, mult);
+                    btn.disabled = gameState.energy < cost;
+                    const costSpan = btn.querySelector('.buy-cost-text');
+                    if (costSpan) costSpan.textContent = `⚡ ${formatNumber(cost)}`;
+                }
+            });
+
+            // Update Status Tombol Beli Upgrade
+            gameState.upgrades.forEach(upg => {
+                if (!upg.bought) {
+                    const btn = document.getElementById(`buy-upg-${upg.id}`);
+                    if (btn) {
+                        btn.disabled = gameState.energy < upg.cost;
+                    }
+                }
+            });
+
+            // Update Tab Prestige
+            const pending = calculatePendingShards();
+            const ascendBtn = document.getElementById('ascendBtn');
+            document.getElementById('pendingShardsDisplay').textContent = pending;
+            if (ascendBtn) {
+                ascendBtn.disabled = pending <= 0;
+            }
+
+            // Stats Komprehensif
+            document.getElementById('statTotalAllTime').textContent = formatNumber(gameState.totalEnergyAllTime);
+            document.getElementById('statTotalClicks').textContent = formatNumber(gameState.totalClicks);
+            document.getElementById('statPrestigeCount').textContent = gameState.prestigeCount;
+            document.getElementById('statGlobalBonus').textContent = `+${bonusPercent}%`;
+        }
+
+        /* ==========================================================================
+           ACTION HANDLERS: KLIK, BELI, PRESTISE
+           ========================================================================== */
+        function handleClick(event) {
+            initAudio();
+            const power = calculateClickPower();
+            gameState.energy += power;
+            gameState.totalEnergyAllTime += power;
+            gameState.totalClicks += 1;
+
+            playSound('click');
+            spawnFloatingText(event, `+${formatNumber(power)}`);
+            checkAchievements();
+            updateUI();
+        }
+
+        function spawnFloatingText(event, text) {
+            const zone = document.getElementById('coreClickZone');
+            const rect = zone.getBoundingClientRect();
+            
+            let x, y;
+            if (event && event.clientX) {
+                x = event.clientX - rect.left;
+                y = event.clientY - rect.top;
+            } else {
+                x = rect.width / 2;
+                y = rect.height / 2;
+            }
+
+            const floatEl = document.createElement('div');
+            floatEl.className = 'floating-text';
+            floatEl.textContent = text;
+            floatEl.style.left = `${x + (Math.random() * 30 - 15)}px`;
+            floatEl.style.top = `${y - 10}px`;
+            zone.appendChild(floatEl);
+
+            setTimeout(() => floatEl.remove(), 850);
+        }
+
+        function buyGenerator(id) {
+            const gen = gameState.generators.find(g => g.id === id);
+            if (!gen) return;
+
+            const cost = getGeneratorCost(gen, gameState.buyMultiplier);
+            if (gameState.energy >= cost) {
+                gameState.energy -= cost;
+                gen.count += gameState.buyMultiplier;
+                playSound('buy');
+                renderGeneratorsTab();
+                checkAchievements();
+                updateUI();
+            }
+        }
+
+        function buyUpgrade(id) {
+            const upg = gameState.upgrades.find(u => u.id === id);
+            if (!upg || upg.bought) return;
+
+            if (gameState.energy >= upg.cost) {
+                gameState.energy -= upg.cost;
+                upg.bought = true;
+                playSound('buy');
+                renderUpgradesTab();
+                renderGeneratorsTab();
+                checkAchievements();
+                updateUI();
+            }
+        }
+
+        function performAscension() {
+            const pending = calculatePendingShards();
+            if (pending <= 0) return;
+
+            const confirmReset = confirm(`Apakah Anda yakin ingin melakukan Kolaps Kuantum?\nAnda akan mendapatkan ${pending} Quantum Shards, namun seluruh cadangan energi dan generator akan di-reset.`);
+            if (!confirmReset) return;
+
+            gameState.prestigeShards += pending;
+            gameState.prestigeCount += 1;
+            gameState.energy = 0;
+
+            // Reset Generator & Upgrades
+            gameState.generators.forEach(g => g.count = 0);
+            gameState.upgrades.forEach(u => u.bought = false);
+
+            playSound('achievement');
+            showAchievementToast("Ascension Berhasil!", `Memanen +${pending} Quantum Shards.`);
+            
+            renderGeneratorsTab();
+            renderUpgradesTab();
+            checkAchievements();
+            updateUI();
+            saveGame();
+        }
+
+        /* ==========================================================================
+           LOCAL STORAGE & SAVE SYSTEM
+           ========================================================================== */
+        const SAVE_KEY = 'CYBERCORE_SAVE_DATA_V1';
+
+        function saveGame() {
+            try {
+                const data = {
+                    energy: gameState.energy,
+                    totalEnergyAllTime: gameState.totalEnergyAllTime,
+                    totalClicks: gameState.totalClicks,
+                    prestigeShards: gameState.prestigeShards,
+                    prestigeCount: gameState.prestigeCount,
+                    generators: gameState.generators.map(g => ({ id: g.id, count: g.count })),
+                    upgrades: gameState.upgrades.map(u => ({ id: u.id, bought: u.bought })),
+                    achievements: gameState.achievements.map(a => ({ id: a.id, unlocked: a.unlocked })),
+                    lastTimestamp: Date.now()
+                };
+                localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+                
+                const saveText = document.getElementById('saveStatusText');
+                if (saveText) {
+                    saveText.textContent = 'Tersimpan';
+                    setTimeout(() => saveText.textContent = 'Auto-Save', 1500);
+                }
+            } catch (e) {
+                console.error('Save failed:', e);
+            }
+        }
+
+        function loadGame() {
+            try {
+                const raw = localStorage.getItem(SAVE_KEY);
+                if (!raw) return;
+
+                const data = JSON.parse(raw);
+                gameState.energy = data.energy || 0;
+                gameState.totalEnergyAllTime = data.totalEnergyAllTime || 0;
+                gameState.totalClicks = data.totalClicks || 0;
+                gameState.prestigeShards = data.prestigeShards || 0;
+                gameState.prestigeCount = data.prestigeCount || 0;
+
+                if (Array.isArray(data.generators)) {
+                    data.generators.forEach(saved => {
+                        const target = gameState.generators.find(g => g.id === saved.id);
+                        if (target) target.count = saved.count;
+                    });
+                }
+
+                if (Array.isArray(data.upgrades)) {
+                    data.upgrades.forEach(saved => {
+                        const target = gameState.upgrades.find(u => u.id === saved.id);
+                        if (target) target.bought = saved.bought;
+                    });
+                }
+
+                if (Array.isArray(data.achievements)) {
+                    data.achievements.forEach(saved => {
+                        const target = gameState.achievements.find(a => a.id === saved.id);
+                        if (target) target.unlocked = saved.unlocked;
+                    });
+                }
+
+                // Kalkulasi Offline Earning (jika ada waktu selisih)
+                if (data.lastTimestamp) {
+                    const elapsedSeconds = Math.min(86400, Math.floor((Date.now() - data.lastTimestamp) / 1000));
+                    if (elapsedSeconds > 5) {
+                        const eps = calculateEPS();
+                        const offlineEarnings = eps * elapsedSeconds;
+                        if (offlineEarnings > 0) {
+                            gameState.energy += offlineEarnings;
+                            gameState.totalEnergyAllTime += offlineEarnings;
+                            setTimeout(() => {
+                                showAchievementToast("Selamat Datang Kembali!", `Pabrik menghasilkan +${formatNumber(offlineEarnings)} Joules saat offline.`);
+                            }, 500);
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error('Load failed:', e);
+            }
+        }
+
+        function resetGame() {
+            if (confirm("Apakah Anda yakin ingin menghapus seluruh progres game dan mulai dari awal?")) {
+                localStorage.removeItem(SAVE_KEY);
+                location.reload();
+            }
+        }
+
+        /* ==========================================================================
+           CANVAS LATAR BELAKANG PARTIKEL INTERAKTIF
+           ========================================================================== */
+        function initBackgroundCanvas() {
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            const particleCount = Math.min(45, Math.floor(width / 30));
+            for (let i = 0; i < particleCount; i++) {
+                particles.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 2 + 1,
+                    vx: (Math.random() - 0.5) * 0.4,
+                    vy: (Math.random() - 0.5) * 0.4,
+                    alpha: Math.random() * 0.5 + 0.2
+                });
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+
+                particles.forEach((p, idx) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0) p.x = width;
+                    if (p.x > width) p.x = 0;
+                    if (p.y < 0) p.y = height;
+                    if (p.y > height) p.y = 0;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(0, 242, 254, ${p.alpha})`;
+                    ctx.fill();
+
+                    for (let j = idx + 1; j < particles.length; j++) {
+                        const p2 = particles[j];
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if (dist < 120) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(0, 242, 254, ${0.15 * (1 - dist / 120)})`;
+                            ctx.stroke();
+                        }
+                    }
+                });
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        /* ==========================================================================
+           INITIALIZATION & GAME LOOP
+           ========================================================================== */
+        window.addEventListener('DOMContentLoaded', () => {
+            initBackgroundCanvas();
+            loadGame();
+
+            renderGeneratorsTab();
+            renderUpgradesTab();
+            renderAchievementsTab();
+            updateUI();
+
+            // Core Click Listener
+            document.getElementById('coreClickZone').addEventListener('click', handleClick);
+
+            // Tab Switching Listeners
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                    btn.classList.add('active');
+                    const tabId = `tab-${btn.dataset.tab}`;
+                    const targetContent = document.getElementById(tabId);
+                    if (targetContent) targetContent.classList.add('active');
+                });
+            });
+
+            // Multiplier Selector Listeners
+            document.querySelectorAll('.mult-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.mult-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    gameState.buyMultiplier = parseInt(btn.dataset.mult, 10);
+                    renderGeneratorsTab();
+                });
+            });
+
+            // Audio Toggle Listener
+            document.getElementById('audioToggleBtn').addEventListener('click', () => {
+                isAudioMuted = !isAudioMuted;
+                document.getElementById('audioIcon').textContent = isAudioMuted ? '🔇' : '🔊';
+                document.getElementById('audioText').textContent = isAudioMuted ? 'Mute' : 'Suara';
+            });
+
+            // Reset Game Listener
+            document.getElementById('resetGameBtn').addEventListener('click', resetGame);
+
+            // Ascension Button Listener
+            document.getElementById('ascendBtn').addEventListener('click', performAscension);
+
+            // Game Loop (Update Tiap 100ms)
+            let lastTick = Date.now();
+            setInterval(() => {
+                const now = Date.now();
+                const delta = (now - lastTick) / 1000;
+                lastTick = now;
+
+                const eps = calculateEPS();
+                const generated = eps * delta;
+
+                gameState.energy += generated;
+                gameState.totalEnergyAllTime += generated;
+
+                checkAchievements();
+                updateUI();
+            }, 100);
+
+            // Auto Save Loop (Tiap 5 Detik)
+            setInterval(() => {
+                saveGame();
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

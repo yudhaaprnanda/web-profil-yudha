@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halaman Login</title>
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Latar belakang warna Biru modern dengan gradasi halus */
+            background: linear-gradient(135deg, #0d47a1 0%, #1976d2 50%, #42a5f5 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Elemen dekoratif ambient di latar belakang */
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .shape-1 {
+            width: 320px;
+            height: 320px;
+            background: #90caf9;
+            top: 10%;
+            left: 15%;
+        }
+
+        .shape-2 {
+            width: 380px;
+            height: 380px;
+            background: #0d47a1;
+            bottom: 10%;
+            right: 15%;
+        }
+
+        /* Kotak Login Berwarna Putih */
+        .login-card {
+            position: relative;
+            z-index: 10;
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 20px;
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+            padding: 40px 35px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .login-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Header Logo & Judul */
+        .card-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand-icon {
+            width: 60px;
+            height: 60px;
+            background: #e3f2fd;
+            color: #1976d2;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 14px;
+            box-shadow: 0 4px 12px rgba(25, 118, 210, 0.15);
+        }
+
+        .brand-icon svg {
+            width: 30px;
+            height: 30px;
+            fill: currentColor;
+        }
+
+        /* Teks Berwarna Hitam */
+        .card-header h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 6px;
+        }
+
+        .card-header p {
+            font-size: 14px;
+            color: #333333;
+        }
+
+        /* Form Group */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: #555555;
+            display: flex;
+            align-items: center;
+            pointer-events: none;
+        }
+
+        .input-icon svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 13px 44px 13px 44px;
+            font-size: 14px;
+            color: #000000;
+            background-color: #f8fafc;
+            border: 1.5px solid #d1d5db;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.25s ease;
+        }
+
+        .form-control::placeholder {
+            color: #888888;
+        }
+
+        .form-control:focus {
+            background-color: #ffffff;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.15);
+        }
+
+        /* Toggle Password Button */
+        .toggle-password {
+            position: absolute;
+            right: 14px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #555555;
+            display: flex;
+            align-items: center;
+            padding: 0;
+            transition: color 0.2s;
+        }
+
+        .toggle-password:hover {
+            color: #000000;
+        }
+
+        .toggle-password svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Opsi Tambahan: Remember Me & Forgot Password */
+        .form-options {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #000000;
+            font-weight: 500;
+            user-select: none;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #1976d2;
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #1565c0;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .forgot-password:hover {
+            color: #0d47a1;
+            text-decoration: underline;
+        }
+
+        /* Tombol Login */
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #1976d2;
+            color: #ffffff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(25, 118, 210, 0.35);
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-login:hover {
+            background: #1565c0;
+            box-shadow: 0 6px 18px rgba(21, 101, 192, 0.45);
+            transform: translateY(-1px);
+        }
+
+        .btn-login:active {
+            transform: translateY(1px);
+        }
+
+        /* Garis Pemisah (Divider) */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 24px 0;
+            color: #555555;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .divider span {
+            padding: 0 12px;
+        }
+
+        /* Tombol Media Sosial */
+        .social-login {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .social-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px;
+            border: 1.5px solid #e0e0e0;
+            background: #ffffff;
+            border-radius: 10px;
+            color: #000000;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .social-btn:hover {
+            background-color: #f8fafc;
+            border-color: #bdbdbd;
+            transform: translateY(-1px);
+        }
+
+        .social-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Footer Link Daftar */
+        .card-footer {
+            text-align: center;
+            font-size: 13px;
+            color: #333333;
+        }
+
+        .card-footer a {
+            color: #1976d2;
+            text-decoration: none;
+            font-weight: 600;
+            margin-left: 4px;
+        }
+
+        .card-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Notifikasi Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ffffff;
+            color: #000000;
+            padding: 14px 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 1000;
+            transform: translateX(150%);
+            transition: transform 0.4s ease;
+            border-left: 5px solid #2e7d32;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            border-left-color: #d32f2f;
+        }
+
+        /* Responsif untuk Layar Kecil */
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 30px 20px;
+                border-radius: 16px;
+            }
+
+            .card-header h2 {
+                font-size: 22px;
+            }
+
+            .social-login {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Glow Background -->
+    <div class="bg-shape shape-1"></div>
+    <div class="bg-shape shape-2"></div>
+
+    <!-- Kotak Login Berwarna Putih -->
+    <div class="login-card">
+        <!-- Header -->
+        <div class="card-header">
+            <div class="brand-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                </svg>
+            </div>
+            <h2>Selamat Datang</h2>
+            <p>Silakan masuk ke akun Anda</p>
+        </div>
+
+        <!-- Form Login -->
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <!-- Input Email / Username -->
+            <div class="form-group">
+                <label for="username">Email atau Username</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                    </span>
+                    <input type="text" id="username" class="form-control" placeholder="nama@email.com" required autocomplete="username">
+                </div>
+            </div>
+
+            <!-- Input Password -->
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <div class="input-wrapper">
+                    <span class="input-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </span>
+                    <input type="password" id="password" class="form-control" placeholder="••••••••" required autocomplete="current-password">
+                    <button type="button" class="toggle-password" id="togglePassword" aria-label="Tampilkan atau sembunyikan kata sandi" onclick="togglePasswordVisibility()">
+                        <!-- Eye Icon (Hide / Show) -->
+                        <svg id="eyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Opsi Tambahan: Remember Me & Forgot Password -->
+            <div class="form-options">
+                <label class="remember-me">
+                    <input type="checkbox" id="rememberMe">
+                    <span>Ingat saya</span>
+                </label>
+                <a href="#" class="forgot-password" onclick="alertForgot(event)">Lupa kata sandi?</a>
+            </div>
+
+            <!-- Tombol Submit -->
+            <button type="submit" class="btn-login" id="btnLogin">
+                <span>Masuk Sekarang</span>
+            </button>
+        </form>
+
+        <!-- Divider -->
+        <div class="divider">
+            <span>atau masuk dengan</span>
+        </div>
+
+        <!-- Tombol Login Sosial -->
+        <div class="social-login">
+            <button type="button" class="social-btn" onclick="socialLogin('Google')">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.15C3.27 21.36 7.35 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.26C.46 8.16 0 9.94 0 12s.46 3.84 1.26 5.42l4.02-3.15z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.27 2.64 1.26 6.58l4.02 3.15c.95-2.83 3.6-4.98 6.72-4.98z"/>
+                </svg>
+                Google
+            </button>
+            <button type="button" class="social-btn" onclick="socialLogin('Facebook')">
+                <svg viewBox="0 0 24 24" fill="#1877F2">
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                </svg>
+                Facebook
+            </button>
+        </div>
+
+        <!-- Footer -->
+        <div class="card-footer">
+            Belum punya akun?<a href="#" onclick="alertRegister(event)">Daftar Sekarang</a>
+        </div>
+    </div>
+
+    <!-- Elemen Toast Notifikasi -->
+    <div id="toastNotification" class="toast">
+        <span id="toastIcon">✔</span>
+        <span id="toastMessage">Pesan</span>
+    </div>
+
+    <script>
+        // Fungsi Toggle Show / Hide Password
+        function togglePasswordVisibility() {
+            const passwordInput = document.getElementById('password');
+            const eyeIcon = document.getElementById('eyeIcon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.innerHTML = `
+                    <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                    <line x1="1" y1="1" x2="23" y2="23"></line>
+                `;
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.innerHTML = `
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                `;
+            }
+        }
+
+        // Fungsi Tampilkan Toast Notifikasi
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toastNotification');
+            const toastMessage = document.getElementById('toastMessage');
+            const toastIcon = document.getElementById('toastIcon');
+
+            toastMessage.textContent = message;
+            toastIcon.textContent = isError ? '✖' : '✔';
+            
+            if (isError) {
+                toast.classList.add('error');
+            } else {
+                toast.classList.remove('error');
+            }
+
+            toast.classList.add('show');
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // Penanganan Submit Form Login
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const btnLogin = document.getElementById('btnLogin');
+
+            if (!username || !password) {
+                showToast('Harap isi email/username dan kata sandi!', true);
+                return;
+            }
+
+            // Simulasi proses loading
+            btnLogin.innerHTML = `<span>Memproses...</span>`;
+            btnLogin.disabled = true;
+
+            setTimeout(() => {
+                btnLogin.innerHTML = `<span>Masuk Sekarang</span>`;
+                btnLogin.disabled = false;
+                showToast(`Selamat datang kembali, ${username}! Login berhasil.`);
+            }, 1000);
+        }
+
+        // Notifikasi Fitur Tambahan
+        function alertForgot(e) {
+            e.preventDefault();
+            const email = prompt("Masukkan alamat email Anda untuk reset kata sandi:");
+            if (email) {
+                showToast("Tautan pemulihan telah dikirim ke: " + email);
+            }
+        }
+
+        function alertRegister(e) {
+            e.preventDefault();
+            showToast("Mengarahkan ke halaman registrasi...");
+        }
+
+        function socialLogin(provider) {
+            showToast("Menghubungkan login dengan " + provider + "...");
+        }
+    </script>
+</body>
+</html>

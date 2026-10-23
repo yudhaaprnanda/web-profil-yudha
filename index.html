@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yudha Prananda — Portfolio | Mahasiswa Sistem Informasi</title>
+  <meta name="description" content="Personal Portfolio Yudha Prananda, mahasiswa Program Studi Sistem Informasi di Universitas Tanjungpura. Menampilkan profil, perjalanan pendidikan, minat & keahlian, serta karya dan pencapaian.">
+  <meta name="author" content="Yudha Prananda">
+
+  <!-- Open Graph / Meta Social -->
+  <meta property="og:title" content="Yudha Prananda — Portfolio">
+  <meta property="og:description" content="Personal Portfolio Mahasiswa Sistem Informasi Universitas Tanjungpura — Technology Meets Business.">
+  <meta property="og:type" content="website">
+
+  <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons Web CDN (Self-fallback) -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+
+  <!-- Ambient Background & Cyber Grid -->
+  <div class="ambient-background" aria-hidden="true">
+    <div class="ambient-grid"></div>
+    <div class="glow-orb glow-orb-1"></div>
+    <div class="glow-orb glow-orb-2"></div>
+    <div class="glow-orb glow-orb-3"></div>
+  </div>
+
+  <!-- Header / Navigation Bar -->
+  <header>
+    <nav class="navbar" id="navbar" aria-label="Navigasi Utama">
+      <div class="app-container nav-container">
+        <!-- Logo -->
+        <a href="#beranda" class="brand-logo" id="nav-brand">
+          <span class="text-gradient">YP.</span>
+          <span class="brand-badge-dot"></span>
+          <span class="brand-sub">YUDHA PRANANDA</span>
+        </a>
+
+        <!-- Desktop Menu -->
+        <ul class="nav-menu" id="desktop-menu">
+          <li><a href="#beranda" class="nav-link active" id="nav-link-beranda">Beranda</a></li>
+          <li><a href="#tentang" class="nav-link" id="nav-link-tentang">Tentang Saya</a></li>
+          <li><a href="#pendidikan" class="nav-link" id="nav-link-pendidikan">Pendidikan</a></li>
+          <li><a href="#keahlian" class="nav-link" id="nav-link-keahlian">Keahlian</a></li>
+          <li><a href="#portofolio" class="nav-link" id="nav-link-portofolio">Portofolio</a></li>
+          <li><a href="#kontak" class="nav-link" id="nav-link-kontak">Kontak</a></li>
+        </ul>
+
+        <!-- Quick Contact CTA -->
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <a href="#kontak" class="nav-cta-btn" id="nav-btn-hubungi">
+            <i data-lucide="send" style="width: 14px; height: 14px;"></i>
+            <span>Hubungi</span>
+          </a>
+          <!-- Mobile Menu Hamburger -->
+          <button class="mobile-toggle" id="mobile-toggle" aria-label="Buka Menu Navigasi">
+            <i data-lucide="menu" style="width: 20px; height: 20px;"></i>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-drawer" id="mobile-drawer" aria-label="Navigasi Mobile">
+      <a href="#beranda" class="mobile-nav-link active">
+        <span>Beranda</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+      <a href="#tentang" class="mobile-nav-link">
+        <span>Tentang Saya</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+      <a href="#pendidikan" class="mobile-nav-link">
+        <span>Pendidikan</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+      <a href="#keahlian" class="mobile-nav-link">
+        <span>Keahlian</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+      <a href="#portofolio" class="mobile-nav-link">
+        <span>Portofolio</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+      <a href="#kontak" class="mobile-nav-link">
+        <span>Kontak</span>
+        <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+      </a>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         Section 1: Hero Section
+         ========================================================================== -->
+    <section class="hero-section" id="beranda">
+      <!-- Interactive Canvas for cyber network background -->
+      <canvas id="hero-canvas"></canvas>
+
+      <div class="app-container" style="position: relative; z-index: 2;">
+        <div class="hero-grid">
+          <!-- Hero Text Content -->
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="pulse-indicator"></span>
+              <span>Mahasiswa Sistem Informasi • Universitas Tanjungpura</span>
+            </div>
+
+            <h1 class="hero-title">
+              Halo, Saya <br>
+              <span class="text-gradient">Yudha Prananda</span>
+            </h1>
+
+            <p class="hero-tagline">Mahasiswa Sistem Informasi</p>
+
+            <p class="hero-description">
+              Saya adalah mahasiswa Sistem Informasi di Universitas Tanjungpura yang terus belajar, berkembang, dan memperluas wawasan.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="hero-actions">
+              <a href="#portofolio" class="btn-primary" id="btn-hero-portfolio">
+                <span>Jelajahi Portofolio</span>
+                <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+              </a>
+              <a href="#kontak" class="btn-secondary" id="btn-hero-contact">
+                <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                <span>Hubungi Saya</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Hero Portrait Visual Area -->
+          <div class="portrait-container">
+            <div class="hero-deco-ring"></div>
+            <div class="portrait-frame">
+              <div class="portrait-inner">
+                <img 
+                  src="assets/yudha-profile.jpg" 
+                  alt="Foto Profil Yudha Prananda" 
+                  class="portrait-image"
+                  id="profile-img"
+                >
+                <div class="portrait-overlay-gradient"></div>
+                <!-- Floating Info Badge on Card -->
+                <div class="portrait-floating-badge">
+                  <div class="floating-badge-icon">
+                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                  </div>
+                  <div>
+                    <div class="floating-badge-title">Yudha Prananda</div>
+                    <div class="floating-badge-desc">Sistem Informasi • UNTAN</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 2: Tentang Saya (About Me)
+         ========================================================================== -->
+    <section class="section-wrapper" id="tentang">
+      <div class="app-container">
+        <div class="section-header">
+          <div class="section-badge">
+            <i data-lucide="user" style="width: 14px; height: 14px;"></i>
+            <span>Tentang Saya</span>
+          </div>
+          <h2 class="section-title">Mengenal Saya Lebih Dekat</h2>
+          <p class="section-subtitle">
+            Kilas balik profil, motivasi belajar, dan ketertarikan pada integrasi teknologi dan dunia bisnis.
+          </p>
+        </div>
+
+        <div class="about-grid">
+          <!-- Narrative Left Column -->
+          <div class="glass-card about-narrative">
+            <p>
+              Halo, saya <strong>Yudha Prananda</strong>, mahasiswa Program Studi Sistem Informasi di Universitas Tanjungpura. Saya memiliki ketertarikan pada perkembangan teknologi informasi dan bagaimana teknologi dapat dimanfaatkan untuk membantu menyelesaikan masalah serta mendukung kebutuhan bisnis.
+            </p>
+            <p class="about-callout-quote">
+              "Teknologi digital menjadi jembatan solusi cerdas untuk memecahkan permasalahan nyata dan mengakselerasi efisiensi dunia bisnis modern."
+            </p>
+            <p>
+              Saat ini, saya sedang mempelajari dasar-dasar pemrograman, pengembangan website, dan desain UI/UX. Saya ingin terus menambah pengetahuan, meningkatkan kemampuan, dan memperluas wawasan melalui proses belajar serta pengalaman baru.
+            </p>
+            <p>
+              Di luar kegiatan akademik, saya menyukai bermain game dan menulis. Kedua hobi tersebut menjadi bagian dari aktivitas yang saya nikmati di waktu luang.
+            </p>
+
+            <div style="margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem;">
+              <span class="info-pill" style="border-color: rgba(56, 189, 248, 0.4); color: var(--cyan-accent);">
+                <i data-lucide="check-circle-2" style="width: 13px; height: 13px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
+                Continuous Learner
+              </span>
+              <span class="info-pill">
+                <i data-lucide="code" style="width: 13px; height: 13px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
+                Tech Enthusiast
+              </span>
+              <span class="info-pill">
+                <i data-lucide="camera" style="width: 13px; height: 13px; display: inline; vertical-align: middle; margin-right: 4px;"></i>
+                Visual & Creative
+              </span>
+            </div>
+          </div>
+
+          <!-- Profile Info Card (Right Column) -->
+          <div class="glass-card info-card">
+            <div class="info-card-header">
+              <div class="info-card-icon">
+                <i data-lucide="id-card" style="width: 22px; height: 22px;"></i>
+              </div>
+              <h3 class="info-card-title">Informasi Profil</h3>
+            </div>
+
+            <div class="info-table">
+              <div class="info-row">
+                <span class="info-label">Nama</span>
+                <span class="info-value">Yudha Prananda</span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Status</span>
+                <span class="info-value" style="color: var(--cyan-accent); font-weight: 600;">
+                  Mahasiswa
+                </span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Program Studi</span>
+                <span class="info-value">Sistem Informasi</span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Universitas</span>
+                <span class="info-value">Universitas Tanjungpura</span>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Minat</span>
+                <div class="info-badges-list">
+                  <span class="info-pill">Teknologi Informasi</span>
+                  <span class="info-pill">Pemrograman</span>
+                  <span class="info-pill">UI/UX</span>
+                  <span class="info-pill">Teknologi Bisnis</span>
+                </div>
+              </div>
+
+              <div class="info-row">
+                <span class="info-label">Hobi</span>
+                <div class="info-badges-list">
+                  <span class="info-pill" style="background: rgba(99, 102, 241, 0.15); border-color: rgba(99, 102, 241, 0.3);">
+                    🎮 Bermain Game
+                  </span>
+                  <span class="info-pill" style="background: rgba(56, 189, 248, 0.15); border-color: rgba(56, 189, 248, 0.3);">
+                    ✍️ Menulis
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 3: Pendidikan (Education)
+         ========================================================================== -->
+    <section class="section-wrapper" id="pendidikan" style="background: rgba(8, 14, 30, 0.35);">
+      <div class="app-container">
+        <div class="section-header">
+          <div class="section-badge">
+            <i data-lucide="graduation-cap" style="width: 14px; height: 14px;"></i>
+            <span>Pendidikan</span>
+          </div>
+          <h2 class="section-title">Perjalanan Pendidikan</h2>
+          <p class="section-subtitle">
+            Jejak langkah pembelajaran formal yang membentuk fondasi akademis, wawasan analitis, dan integritas saya.
+          </p>
+        </div>
+
+        <!-- Vertical Interactive Timeline -->
+        <div class="timeline-container">
+          <div class="timeline-line"></div>
+
+          <!-- Item 1: Universitas Tanjungpura -->
+          <div class="timeline-item">
+            <div class="timeline-node" title="Perguruan Tinggi">
+              <i data-lucide="graduation-cap" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="timeline-content-wrapper">
+              <div class="glass-card timeline-card">
+                <span class="timeline-level-badge">Pendidikan Tinggi</span>
+                <h3 class="timeline-title">Universitas Tanjungpura</h3>
+                <p class="timeline-meta">Program Studi Sistem Informasi</p>
+                <div>
+                  <span class="timeline-status">
+                    <span class="pulse-indicator" style="width: 6px; height: 6px; display: inline-block;"></span>
+                    Status: Mahasiswa Aktif
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 2: SMA Negeri 3 Singkawang -->
+          <div class="timeline-item">
+            <div class="timeline-node" title="Pendidikan Menengah Atas">
+              <i data-lucide="school" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="timeline-content-wrapper">
+              <div class="glass-card timeline-card">
+                <span class="timeline-level-badge">Pendidikan Menengah Atas</span>
+                <h3 class="timeline-title">SMA Negeri 3 Singkawang</h3>
+                <p class="timeline-meta">Pendidikan Menengah Atas</p>
+                <div>
+                  <span class="info-pill">Alumni</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 3: SMP Negeri 3 Singkawang -->
+          <div class="timeline-item">
+            <div class="timeline-node" title="Pendidikan Menengah Pertama">
+              <i data-lucide="book-open" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="timeline-content-wrapper">
+              <div class="glass-card timeline-card">
+                <span class="timeline-level-badge">Pendidikan Menengah Pertama</span>
+                <h3 class="timeline-title">SMP Negeri 3 Singkawang</h3>
+                <p class="timeline-meta">Pendidikan Menengah Pertama</p>
+                <div>
+                  <span class="info-pill">Alumni</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item 4: SD Negeri 23 Singkawang -->
+          <div class="timeline-item">
+            <div class="timeline-node" title="Pendidikan Dasar">
+              <i data-lucide="sparkles" style="width: 20px; height: 20px;"></i>
+            </div>
+            <div class="timeline-content-wrapper">
+              <div class="glass-card timeline-card">
+                <span class="timeline-level-badge">Pendidikan Dasar</span>
+                <h3 class="timeline-title">SD Negeri 23 Singkawang</h3>
+                <p class="timeline-meta">Pendidikan Dasar</p>
+                <div>
+                  <span class="info-pill">Alumni</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 4: Minat dan Keahlian (Interests & Skills)
+         ========================================================================== -->
+    <section class="section-wrapper" id="keahlian">
+      <div class="app-container">
+        <div class="section-header">
+          <div class="section-badge">
+            <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
+            <span>Minat & Keahlian</span>
+          </div>
+          <h2 class="section-title">Hal yang Sedang Saya Kembangkan</h2>
+          <p class="section-subtitle">
+            Saya tertarik untuk terus mempelajari hal-hal baru, terutama yang berkaitan dengan teknologi informasi dan penerapannya dalam kehidupan sehari-hari maupun dunia bisnis.
+          </p>
+        </div>
+
+        <div class="skills-grid">
+          <!-- Skill A: Programming Fundamentals -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Fondasi Dasar</span>
+              </div>
+              <h3 class="skill-title">Programming Fundamentals</h3>
+              <p class="skill-description">
+                Memahami dasar-dasar pemrograman, seperti logika program, variabel, percabangan, perulangan, fungsi, dan pengolahan data sederhana. Tertarik memperdalam kemampuan coding melalui latihan dan pembuatan program.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">Logika Program</span>
+              <span class="info-pill">Algoritma</span>
+              <span class="info-pill">Struktur Data</span>
+            </div>
+          </div>
+
+          <!-- Skill B: Web Development -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Sedang Dipelajari</span>
+              </div>
+              <h3 class="skill-title">Web Development</h3>
+              <p class="skill-description">
+                Tertarik mempelajari cara membangun website serta memahami dasar HTML, CSS, dan JavaScript sebagai bagian dari proses pengembangan web.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">HTML5</span>
+              <span class="info-pill">CSS3</span>
+              <span class="info-pill">JavaScript</span>
+            </div>
+          </div>
+
+          <!-- Skill C: UI/UX Design -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Sedang Dipelajari</span>
+              </div>
+              <h3 class="skill-title">UI/UX Design</h3>
+              <p class="skill-description">
+                Memahami konsep dasar UI/UX, seperti tata letak, hierarki visual, konsistensi desain, kemudahan navigasi, dan pengalaman pengguna. Ingin terus belajar merancang antarmuka yang menarik dan mudah digunakan.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">Hierarki Visual</span>
+              <span class="info-pill">Wireframing</span>
+              <span class="info-pill">User Flow</span>
+            </div>
+          </div>
+
+          <!-- Skill D: Sistem Informasi dan Bisnis -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Fokus Akademik</span>
+              </div>
+              <h3 class="skill-title">Sistem Informasi dan Bisnis</h3>
+              <p class="skill-description">
+                Tertarik memahami bagaimana sistem informasi membantu proses bisnis, pengelolaan data, efisiensi operasional, dan pengambilan keputusan.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">Proses Bisnis</span>
+              <span class="info-pill">Data Management</span>
+              <span class="info-pill">Efisiensi</span>
+            </div>
+          </div>
+
+          <!-- Skill E: Creative Thinking -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Kreativitas & Ide</span>
+              </div>
+              <h3 class="skill-title">Creative Thinking</h3>
+              <p class="skill-description">
+                Memiliki ketertarikan dalam mengeksplorasi ide, menulis, dan menemukan pendekatan kreatif untuk menyampaikan informasi atau menyelesaikan permasalahan.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">Problem Solving</span>
+              <span class="info-pill">Storytelling</span>
+              <span class="info-pill">Eksplorasi Ide</span>
+            </div>
+          </div>
+
+          <!-- Skill F: Continuous Learning -->
+          <div class="glass-card skill-card">
+            <div>
+              <div class="skill-header" style="margin-bottom: 1.25rem;">
+                <span class="skill-tag">Mindset Pertumbuhan</span>
+              </div>
+              <h3 class="skill-title">Continuous Learning</h3>
+              <p class="skill-description">
+                Memiliki semangat untuk mempelajari teknologi baru, meningkatkan kemampuan secara bertahap, dan mengembangkan pengetahuan melalui praktik.
+              </p>
+            </div>
+            <div style="margin-top: 1.5rem; display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <span class="info-pill">Adaptabilitas</span>
+              <span class="info-pill">Riset Mandiri</span>
+              <span class="info-pill">Praktik Nyata</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 5: Portofolio, Karya, dan Prestasi
+         ========================================================================== -->
+    <section class="section-wrapper" id="portofolio" style="background: rgba(8, 14, 30, 0.35);">
+      <div class="app-container">
+        <div class="section-header">
+          <div class="section-badge">
+            <i data-lucide="award" style="width: 14px; height: 14px;"></i>
+            <span>Portofolio & Prestasi</span>
+          </div>
+          <h2 class="section-title">Karya dan Pencapaian</h2>
+          <p class="section-subtitle">
+            Karya kreatif dan pengalaman membanggakan di bidang perfilman dan fotografi yang menjadi bagian berharga dalam proses berkarya saya.
+          </p>
+        </div>
+
+        <div class="portfolio-grid">
+          <!-- Item A: Best Movie ACCFEST 2025 -->
+          <div class="glass-card portfolio-card">
+            <div>
+              <span class="portfolio-category-pill">Film / Kompetisi Kreatif</span>
+              <h3 class="portfolio-card-title">Best Movie ACCFEST 2025</h3>
+              <p class="portfolio-card-desc">
+                Salah satu pencapaian yang berkesan dalam perjalanan kreatif saya di bidang perfilman. Pengalaman ini menjadi bagian dari proses untuk terus mengeksplorasi ide dan mengembangkan karya audiovisual.
+              </p>
+            </div>
+            <button class="portfolio-detail-btn" data-portfolio-key="accfest" id="btn-detail-accfest">
+              <span>Lihat Detail Pencapaian</span>
+              <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+
+          <!-- Item B: Festival Film Pelajar Jogja 2024 -->
+          <div class="glass-card portfolio-card">
+            <div>
+              <span class="portfolio-category-pill">Film Pelajar / Penghargaan</span>
+              <h3 class="portfolio-card-title">Karya Terbaik 2 — Festival Film Pelajar Jogja 2024</h3>
+              <p class="portfolio-card-desc">
+                Pencapaian dalam Festival Film Pelajar Jogja 2024 yang menjadi pengalaman berharga untuk terus mengembangkan kreativitas dan kemampuan dalam menghasilkan karya.
+              </p>
+            </div>
+            <button class="portfolio-detail-btn" data-portfolio-key="ffpj" id="btn-detail-ffpj">
+              <span>Lihat Detail Pencapaian</span>
+              <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+
+          <!-- Item C: Photography — SMA Negeri 3 Singkawang -->
+          <div class="glass-card portfolio-card">
+            <div>
+              <span class="portfolio-category-pill">Fotografi / Pengalaman Kreatif</span>
+              <h3 class="portfolio-card-title">Photography — SMA Negeri 3 Singkawang</h3>
+              <p class="portfolio-card-desc">
+                Pernah mengikuti kegiatan fotografi di SMA Negeri 3 Singkawang sebagai pengalaman dalam mengeksplorasi kreativitas visual, komposisi, dan penyampaian cerita melalui gambar.
+              </p>
+            </div>
+            <button class="portfolio-detail-btn" data-portfolio-key="photography" id="btn-detail-photo">
+              <span>Lihat Detail Pengalaman</span>
+              <i data-lucide="arrow-up-right" style="width: 16px; height: 16px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         Section 6: Kontak dan Media Sosial
+         ========================================================================== -->
+    <section class="section-wrapper" id="kontak">
+      <div class="app-container">
+        <div class="section-header">
+          <div class="section-badge">
+            <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+            <span>Kontak & Jejaring</span>
+          </div>
+          <h2 class="section-title">Mari Terhubung</h2>
+          <p class="section-subtitle">
+            Saya terbuka untuk terhubung, bertukar ide, dan menjalin komunikasi. Silakan hubungi saya melalui media sosial atau email berikut.
+          </p>
+        </div>
+
+        <!-- 3 Contact Cards -->
+        <div class="contact-grid">
+          <!-- Card 1: Instagram -->
+          <div class="glass-card contact-card">
+            <div class="contact-icon-bubble">
+              <i data-lucide="instagram" style="width: 28px; height: 28px;"></i>
+            </div>
+            <h3 class="contact-card-title">Instagram</h3>
+            <p class="contact-card-sub">@yudhaaprnanda</p>
+            <a 
+              href="https://www.instagram.com/yudhaaprnanda?dlrf=MXBmb2pvZTJ2b3dlcw==" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="contact-btn contact-btn-solid"
+              id="btn-instagram"
+            >
+              <span>Instagram Saya</span>
+              <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+            </a>
+          </div>
+
+          <!-- Card 2: Email -->
+          <div class="glass-card contact-card">
+            <div class="contact-icon-bubble">
+              <i data-lucide="mail" style="width: 28px; height: 28px;"></i>
+            </div>
+            <h3 class="contact-card-title">Email</h3>
+            <p class="contact-card-sub">yudhaprnanda@gmail.com</p>
+            <div style="display: flex; flex-direction: column; gap: 0.65rem; width: 100%;">
+              <a 
+                href="mailto:yudhaprnanda@gmail.com" 
+                class="contact-btn contact-btn-solid"
+                id="btn-kirim-email"
+              >
+                <span>Kirim Email</span>
+                <i data-lucide="send" style="width: 15px; height: 15px;"></i>
+              </a>
+              <button 
+                type="button" 
+                class="contact-btn contact-btn-outline" 
+                id="copy-email-btn"
+                title="Salin alamat email ke clipboard"
+              >
+                <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
+                <span>Salin Email</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: GitHub -->
+          <div class="glass-card contact-card">
+            <div class="contact-icon-bubble">
+              <i data-lucide="github" style="width: 28px; height: 28px;"></i>
+            </div>
+            <h3 class="contact-card-title">GitHub</h3>
+            <p class="contact-card-sub">github.com/yudhaaprnanda</p>
+            <a 
+              href="https://github.com/yudhaaprnanda" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              class="contact-btn contact-btn-solid"
+              id="btn-github"
+            >
+              <span>Kunjungi GitHub</span>
+              <i data-lucide="external-link" style="width: 15px; height: 15px;"></i>
+            </a>
+          </div>
+        </div>
+
+        <!-- Interactive Quick Contact Form (Connects directly to Mailto) -->
+        <div class="glass-card quick-message-box">
+          <div class="quick-message-title">
+            <i data-lucide="send" style="width: 20px; height: 20px; color: var(--cyan-accent);"></i>
+            <span>Kirim Pesan Langsung</span>
+          </div>
+          <p style="font-size: 0.875rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+            Tulis pesan singkat di bawah ini dan klik kirim untuk langsung tersambung ke email klien Anda.
+          </p>
+
+          <form id="quick-contact-form">
+            <div class="form-group">
+              <label for="sender-name" class="form-label">Nama Anda</label>
+              <input type="text" id="sender-name" class="form-input" placeholder="Contoh: Budi Santoso" required>
+            </div>
+
+            <div class="form-group">
+              <label for="sender-subject" class="form-label">Subjek / Topik</label>
+              <input type="text" id="sender-subject" class="form-input" placeholder="Contoh: Diskusi Proyek / Kolaborasi Belajar" required>
+            </div>
+
+            <div class="form-group">
+              <label for="sender-message" class="form-label">Isi Pesan</label>
+              <textarea id="sender-message" class="form-textarea" placeholder="Tuliskan pesan atau pertanyaan Anda di sini..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" style="width: 100%; border-radius: var(--radius-md);">
+              <i data-lucide="send" style="width: 18px; height: 18px;"></i>
+              <span>Kirim Pesan ke yudhaprnanda@gmail.com</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       Footer Section
+       ========================================================================== -->
+  <footer class="app-footer">
+    <div class="app-container">
+      <div class="footer-inner">
+        <!-- Copyright Text -->
+        <div class="footer-copy">
+          <p>© 2026 Yudha Prananda. Dibuat dengan semangat belajar dan kreativitas.</p>
+        </div>
+
+        <!-- Quick Navigation -->
+        <ul class="footer-nav">
+          <li><a href="#beranda" class="footer-link">Beranda</a></li>
+          <li><a href="#tentang" class="footer-link">Tentang</a></li>
+          <li><a href="#pendidikan" class="footer-link">Pendidikan</a></li>
+          <li><a href="#keahlian" class="footer-link">Keahlian</a></li>
+          <li><a href="#portofolio" class="footer-link">Portofolio</a></li>
+          <li><a href="#kontak" class="footer-link">Kontak</a></li>
+        </ul>
+
+        <!-- Social Icons & Back to Top -->
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <div class="footer-socials">
+            <a href="https://www.instagram.com/yudhaaprnanda?dlrf=MXBmb2pvZTJ2b3dlcw==" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="Instagram Yudha Prananda">
+              <i data-lucide="instagram" style="width: 18px; height: 18px;"></i>
+            </a>
+            <a href="mailto:yudhaprnanda@gmail.com" class="footer-social-icon" title="Email Yudha Prananda">
+              <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+            </a>
+            <a href="https://github.com/yudhaaprnanda" target="_blank" rel="noopener noreferrer" class="footer-social-icon" title="GitHub Yudha Prananda">
+              <i data-lucide="github" style="width: 18px; height: 18px;"></i>
+            </a>
+          </div>
+
+          <a href="#beranda" class="footer-social-icon" title="Kembali ke Atas" style="border-color: var(--border-highlight); color: var(--cyan-accent);">
+            <i data-lucide="arrow-up" style="width: 18px; height: 18px;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       Interactive Portfolio Detail Modal
+       ========================================================================== -->
+  <div class="modal-backdrop" id="portfolio-modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-box">
+      <div style="position: relative;">
+        <img src="" alt="" class="modal-img" id="modal-img">
+        <button class="modal-close-btn" id="modal-close" aria-label="Tutup Detail">
+          <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+        </button>
+      </div>
+      <div class="modal-content">
+        <span class="section-badge" id="modal-category" style="margin-bottom: 0.75rem;">Kategori</span>
+        <h3 id="modal-title" style="font-size: 1.5rem; font-weight: 800; color: #fff; margin-bottom: 0.75rem;">Judul Karya</h3>
+        <p id="modal-desc" style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem;">
+          Deskripsi karya.
+        </p>
+
+        <div>
+          <h4 style="font-size: 0.825rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 0.5rem; font-weight: 700;">
+            Fokus & Eksplorasi:
+          </h4>
+          <div id="modal-tags" style="display: flex; flex-wrap: wrap; gap: 0.5rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notice" id="toast">
+    <i data-lucide="check-circle" style="width: 20px; height: 20px; color: var(--cyan-accent);"></i>
+    <span>Alamat email berhasil disalin ke clipboard!</span>
+  </div>
+
+  <!-- Interactive Scripts -->
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
